@@ -7,9 +7,8 @@ import {
     Event,
 } from 'micromark-util-types';
 
-class Options {
-    singleTilde: boolean = true;
-    constructor() { this.singleTilde = true }
+interface Options {
+    singleTilde?: boolean;
 }
 
 /**
@@ -33,7 +32,7 @@ import { types } from 'micromark-util-symbol/types.js'
  * @returns {Extension}
  */
 
-let gfmStrikethrough: Extension = function (options: Options = {}) {
+let gfmStrikethrough = function (options: Options = {}): Extension {
     let single = options.singleTilde
 
     if (single === null || single === undefined) {
