@@ -4,23 +4,8 @@ import { resolveAll } from 'micromark-util-resolve-all';
 import { codes } from 'micromark-util-symbol/codes.js';
 import { constants } from 'micromark-util-symbol/constants.js';
 import { types } from 'micromark-util-symbol/types.js';
-/**
- * @typedef Options
- * @property {boolean} [singleTilde=true]
- *   Whether to support strikethrough with a single tilde (`boolean`, default:
- *   `true`).
- *   Single tildes work on github.com, but are technically prohibited by the
- *   GFM spec.
- */
-/**
- * @param {Options} [options]
- * @returns {Extension}
- */
+
 let pandocHighlight = function (options = {}) {
-    // let single = options.singleTilde
-    // if (single === null || single === undefined) {
-    //     single = true
-    // }
     // Take events and resolve highlight.
     let resolveAllHighlight = function (events, context) {
         let index = -1;
@@ -43,7 +28,7 @@ let pandocHighlight = function (options = {}) {
                         events[open][1]._open &&
                         // If the sizes are the same:
                         events[index][1].end.offset - events[index][1].start.offset ===
-                            events[open][1].end.offset - events[open][1].start.offset) {
+                        events[open][1].end.offset - events[open][1].start.offset) {
                         events[index][1].type = 'highlightSequence';
                         events[open][1].type = 'highlightSequence';
                         highlight = {
