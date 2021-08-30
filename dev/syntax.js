@@ -4,7 +4,6 @@ import { resolveAll } from 'micromark-util-resolve-all';
 import { codes } from 'micromark-util-symbol/codes.js';
 import { constants } from 'micromark-util-symbol/constants.js';
 import { types } from 'micromark-util-symbol/types.js';
-
 let pandocHighlight = function (options = {}) {
     // Take events and resolve highlight.
     let resolveAllHighlight = function (events, context) {
@@ -28,7 +27,7 @@ let pandocHighlight = function (options = {}) {
                         events[open][1]._open &&
                         // If the sizes are the same:
                         events[index][1].end.offset - events[index][1].start.offset ===
-                        events[open][1].end.offset - events[open][1].start.offset) {
+                            events[open][1].end.offset - events[open][1].start.offset) {
                         events[index][1].type = 'highlightSequence';
                         events[open][1].type = 'highlightSequence';
                         highlight = {
