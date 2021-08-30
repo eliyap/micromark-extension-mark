@@ -1,2 +1,3 @@
-# micromark-extension-pandoc-highlight
- Micromark support for Pandoc ==highlight==
+# micromark-extension-mark
+
+Micromark support for the <mark>mark</mark> tag using ==equals signs==.
