@@ -10,94 +10,85 @@ import {
 test('markdown -> html (micromark)', (t) => {
     const defaults = syntax()
 
-    t.deepEqual(
-        micromark('a ~b~', {
+    t.isNotDeepEqual(
+        micromark('a =b=', {
             extensions: [defaults],
             htmlExtensions: [html]
         }),
-        '<p>a <del>b</del></p>',
-        'should support strikethrough w/ one tilde'
+        '<p>a <mark>b</mark></p>',
+        'should not support highlight w/ one equals'
     )
 
     t.deepEqual(
-        micromark('a ~~b~~', {
+        micromark('a ==b==', {
             extensions: [defaults],
             htmlExtensions: [html]
         }),
-        '<p>a <del>b</del></p>',
-        'should support strikethrough w/ two tildes'
+        '<p>a <mark>b</mark></p>',
+        'should support highlight w/ two equals'
     )
 
     t.deepEqual(
-        micromark('a ~~~b~~~', {
+        micromark('a ===b===', {
             extensions: [defaults],
             htmlExtensions: [html]
         }),
-        '<p>a ~~~b~~~</p>',
-        'should not support strikethrough w/ three tildes'
+        '<p>a ===b===</p>',
+        'should not support highlight w/ three equals'
     )
 
     t.deepEqual(
-        micromark('a \\~~~b~~ c', {
+        micromark('a \\===b== c', {
             extensions: [defaults],
             htmlExtensions: [html]
         }),
-        '<p>a ~<del>b</del> c</p>',
-        'should support strikethrough w/ after an escaped tilde'
+        '<p>a =<mark>b</mark> c</p>',
+        'should support highlight w/ after an escaped equals'
     )
 
     t.deepEqual(
-        micromark('a ~~b ~~c~~ d~~ e', {
+        micromark('a ==b ==c== d== e', {
             extensions: [defaults],
             htmlExtensions: [html]
         }),
-        '<p>a <del>b <del>c</del> d</del> e</p>',
-        'should support nested strikethrough'
+        '<p>a <mark>b <mark>c</mark> d</mark> e</p>',
+        'should support nested highlight'
     )
 
     t.deepEqual(
-        micromark('a ~-1~ b', {
+        micromark('a ==-1== b', {
             extensions: [defaults],
             htmlExtensions: [html]
         }),
-        '<p>a <del>-1</del> b</p>',
+        '<p>a <mark>-1</mark> b</p>',
         'should open if preceded by whitespace and followed by punctuation'
     )
 
     t.deepEqual(
-        micromark('a ~b.~ c', {
+        micromark('a ==b.== c', {
             extensions: [defaults],
             htmlExtensions: [html]
         }),
-        '<p>a <del>b.</del> c</p>',
+        '<p>a <mark>b.</mark> c</p>',
         'should close if preceded by punctuation and followed by whitespace'
     )
 
     t.deepEqual(
-        micromark('~b.~.', {
+        micromark('==b.==.', {
             extensions: [syntax({ singleTilde: true })],
             htmlExtensions: [html]
         }),
-        '<p><del>b.</del>.</p>',
-        'should close if preceded and followed by punctuation (del)'
+        '<p><mark>b.</mark>.</p>',
+        'should close if preceded and followed by punctuation (mark)'
     )
 
     t.deepEqual(
-        micromark('a ~b~ ~~c~~ d', {
+        micromark('a =b= ==c== d', {
             extensions: [syntax({ singleTilde: false })],
             htmlExtensions: [html]
         }),
-        '<p>a ~b~ <del>c</del> d</p>',
-        'should not support strikethrough w/ one tilde if `singleTilde: false`'
-    )
-
-    t.deepEqual(
-        micromark('a ~b~ ~~c~~ d', {
-            extensions: [syntax({ singleTilde: true })],
-            htmlExtensions: [html]
-        }),
-        '<p>a <del>b</del> <del>c</del> d</p>',
-        'should support strikethrough w/ one tilde if `singleTilde: true`'
+        '<p>a =b= <mark>c</mark> d</p>',
+        'should not support highlight w/ one equals'
     )
 
     t.end()
