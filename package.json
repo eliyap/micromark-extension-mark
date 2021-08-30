@@ -2,6 +2,7 @@
   "name": "micromark-extension-pandoc-highlight",
   "version": "1.0.0",
   "description": "Micromark support for Pandoc ==highlight==",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +17,18 @@
   "bugs": {
     "url": "https://github.com/eliyap/micromark-extension-pandoc-highlight/issues"
   },
-  "homepage": "https://github.com/eliyap/micromark-extension-pandoc-highlight#readme"
+  "homepage": "https://github.com/eliyap/micromark-extension-pandoc-highlight#readme",
+  "devDependencies": {
+    "@types/tape": "^4.13.2",
+    "micromark": "^3.0.5",
+    "tape": "^5.3.1",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "micromark-util-chunked": "^1.0.0",
+    "micromark-util-classify-character": "^1.0.0",
+    "micromark-util-resolve-all": "^1.0.0",
+    "micromark-util-symbol": "^1.0.0",
+    "micromark-util-types": "^1.0.1"
+  }
 }
