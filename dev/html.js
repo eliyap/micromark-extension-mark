@@ -1,11 +1,11 @@
-export const pandocHighlightHtml = {
+export const pandocMarkHtml = {
     enter: {
-        highlight() {
+        mark() {
             this.tag('<mark>');
         }
     },
     exit: {
-        highlight() {
+        mark() {
             this.tag('</mark>');
         }
     }

@@ -16,12 +16,12 @@ import { types } from 'micromark-util-symbol/types.js';
 
 interface Options { }
 
-let pandocHighlight = function (options: Options = {}): Extension {
+let pandocMark = function (options: Options = {}): Extension {
 
-    // Take events and resolve highlight.
-    let resolveAllHighlight: Resolver = function (events, context) {
+    // Take events and resolve mark.
+    let resolveAllMark: Resolver = function (events, context) {
         let index = -1
-        let highlight: Token
+        let mark: Token
         let text: Token
         let open: number
         let nextEvents: Event[]
@@ -31,7 +31,7 @@ let pandocHighlight = function (options: Options = {}): Extension {
             // Find a token that can close.
             if (
                 events[index][0] === 'enter' &&
-                events[index][1].type === 'highlightSequenceTemporary' &&
+                events[index][1].type === 'markSequenceTemporary' &&
                 events[index][1]._close
             ) {
                 open = index
@@ -41,30 +41,30 @@ let pandocHighlight = function (options: Options = {}): Extension {
                     // Find a token that can open the closer.
                     if (
                         events[open][0] === 'exit' &&
-                        events[open][1].type === 'highlightSequenceTemporary' &&
+                        events[open][1].type === 'markSequenceTemporary' &&
                         events[open][1]._open &&
                         // If the sizes are the same:
                         events[index][1].end.offset - events[index][1].start.offset ===
                         events[open][1].end.offset - events[open][1].start.offset
                     ) {
-                        events[index][1].type = 'highlightSequence'
-                        events[open][1].type = 'highlightSequence'
+                        events[index][1].type = 'markSequence'
+                        events[open][1].type = 'markSequence'
 
-                        highlight = {
-                            type: 'highlight',
+                        mark = {
+                            type: 'mark',
                             start: Object.assign({}, events[open][1].start),
                             end: Object.assign({}, events[index][1].end)
                         }
 
                         text = {
-                            type: 'highlightText',
+                            type: 'markText',
                             start: Object.assign({}, events[open][1].end),
                             end: Object.assign({}, events[index][1].start)
                         }
 
                         // Opening.
                         nextEvents = [
-                            ['enter', highlight, context],
+                            ['enter', mark, context],
                             ['enter', events[open][1], context],
                             ['exit', events[open][1], context],
                             ['enter', text, context]
@@ -87,7 +87,7 @@ let pandocHighlight = function (options: Options = {}): Extension {
                             ['exit', text, context],
                             ['enter', events[index][1], context],
                             ['exit', events[index][1], context],
-                            ['exit', highlight, context]
+                            ['exit', mark, context]
                         ])
 
                         splice(events, open - 1, index - open + 3, nextEvents)
@@ -102,7 +102,7 @@ let pandocHighlight = function (options: Options = {}): Extension {
         index = -1
 
         while (++index < events.length) {
-            if (events[index][1].type === 'highlightSequenceTemporary') {
+            if (events[index][1].type === 'markSequenceTemporary') {
                 events[index][1].type = types.data
             }
         }
@@ -110,7 +110,7 @@ let pandocHighlight = function (options: Options = {}): Extension {
         return events
     }
 
-    let tokenizeHighlight: Tokenizer = function (effects, ok, nok) {
+    let tokenizeMark: Tokenizer = function (effects, ok, nok) {
         const previous = this.previous
         const events = this.events
         let size = 0
@@ -127,7 +127,7 @@ let pandocHighlight = function (options: Options = {}): Extension {
             }
 
             if (size < 2) return nok(code)
-            const token = effects.exit('highlightSequenceTemporary')
+            const token = effects.exit('markSequenceTemporary')
             const after = classifyCharacter(code)
             token._open =
                 !after || (after === constants.attentionSideAfter && Boolean(before))
@@ -145,7 +145,7 @@ let pandocHighlight = function (options: Options = {}): Extension {
                 return nok(code)
             }
 
-            effects.enter('highlightSequenceTemporary')
+            effects.enter('markSequenceTemporary')
             return more(code)
         };
 
@@ -153,8 +153,8 @@ let pandocHighlight = function (options: Options = {}): Extension {
     }
 
     const tokenizer = {
-        tokenize: tokenizeHighlight,
-        resolveAll: resolveAllHighlight
+        tokenize: tokenizeMark,
+        resolveAll: resolveAllMark
     }
 
     return {
@@ -164,4 +164,4 @@ let pandocHighlight = function (options: Options = {}): Extension {
     }
 }
 
-export { pandocHighlight };
+export { pandocMark };

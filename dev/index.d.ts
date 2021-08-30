@@ -1,2 +1,2 @@
-export { pandocHighlightHtml } from './html.js';
-export { pandocHighlight } from './syntax.js';
+export { pandocMarkHtml } from './html.js';
+export { pandocMark } from './syntax.js';

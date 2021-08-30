@@ -1,2 +1,2 @@
 import { HtmlExtension } from 'micromark-util-types';
-export declare const pandocHighlightHtml: HtmlExtension;
+export declare const pandocMarkHtml: HtmlExtension;

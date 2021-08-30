@@ -1,5 +1,5 @@
 import { Extension } from 'micromark-util-types';
 interface Options {
 }
-declare let pandocHighlight: (options?: Options) => Extension;
-export { pandocHighlight };
+declare let pandocMark: (options?: Options) => Extension;
+export { pandocMark };

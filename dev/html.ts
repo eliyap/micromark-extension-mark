@@ -1,13 +1,13 @@
 import { HtmlExtension } from 'micromark-util-types';
 
-export const pandocHighlightHtml: HtmlExtension = {
+export const pandocMarkHtml: HtmlExtension = {
     enter: {
-        highlight() {
+        mark() {
             this.tag('<mark>')
         }
     },
     exit: {
-        highlight() {
+        mark() {
             this.tag('</mark>')
         }
     }

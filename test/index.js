@@ -1,6 +1,6 @@
 import test from 'tape';
 import { micromark } from 'micromark';
-import { pandocHighlight as syntax, pandocHighlightHtml as html } from '../dev/index.js';
+import { pandocMark as syntax, pandocMarkHtml as html } from '../dev/index.js';
 test('markdown -> html (micromark)', (t) => {
     const defaults = syntax();
     t.isNotDeepEqual(micromark('a =b=', {
