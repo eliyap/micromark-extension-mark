@@ -47,14 +47,10 @@ let gfmStrikethrough: Extension = function (options: Options = {}) {
      */
     let resolveAllStrikethrough: Resolver = function (events, context) {
         let index = -1
-        /** @type {Token} */
-        let strikethrough
-        /** @type {Token} */
-        let text
-        /** @type {number} */
-        let open
-        /** @type {Event[]} */
-        let nextEvents
+        let strikethrough: Token
+        let text: Token
+        let open: number
+        let nextEvents: Event[]
 
         // Walk through all events.
         while (++index < events.length) {
@@ -140,30 +136,12 @@ let gfmStrikethrough: Extension = function (options: Options = {}) {
         return events
     }
 
-    /** @type {Tokenizer} */
     let tokenizeStrikethrough: Tokenizer = function (effects, ok, nok) {
         const previous = this.previous
         const events = this.events
         let size = 0
 
-        return start
-
-        /** @type {State} */
-        function start(code) {
-            if (
-                code !== codes.tilde ||
-                (previous === codes.tilde &&
-                    events[events.length - 1][1].type !== types.characterEscape)
-            ) {
-                return nok(code)
-            }
-
-            effects.enter('strikethroughSequenceTemporary')
-            return more(code)
-        }
-
-        /** @type {State} */
-        function more(code) {
+        let more: State = function (code) {
             const before = classifyCharacter(previous)
 
             if (code === codes.tilde) {
@@ -182,7 +160,22 @@ let gfmStrikethrough: Extension = function (options: Options = {}) {
             token._close =
                 !before || (before === constants.attentionSideAfter && Boolean(after))
             return ok(code)
-        }
+        };
+
+        let start: State = function (code) {
+            if (
+                code !== codes.tilde ||
+                (previous === codes.tilde &&
+                    events[events.length - 1][1].type !== types.characterEscape)
+            ) {
+                return nok(code)
+            }
+
+            effects.enter('strikethroughSequenceTemporary')
+            return more(code)
+        };
+
+        return start;
     }
 
     const tokenizer = {
