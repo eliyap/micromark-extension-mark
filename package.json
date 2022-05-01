@@ -1,6 +1,6 @@
 {
   "name": "micromark-extension-mark",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Micromark support for the <mark>mark</mark> tag using ==equals signs==.",
   "type": "module",
   "main": "index.js",
